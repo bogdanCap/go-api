@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development # development | production
+    image: go/test:1.0  
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=development
+    restart: unless-stopped
+    volumes:
+      - .:/app # Mirror local files for Air to watch

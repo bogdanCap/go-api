@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-test
+  template:
+    metadata:
+      labels:
+        app: go-test
+    spec:
+      containers:
+      - name: go-test
+        image: go/test:1.0
+        imagePullPolicy: Never
+        ports:
+         - containerPort: 8080
+        #command: ["go", "run", "main.go"] 
+        #command: ["air"] 
+        env:
+          - name: DB_HOST
+            value: postgres
+
+          - name: DB_PORT
+            value: "5432"
+
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_USER
+
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_PASSWORD
+
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_DB
+        #readinessProbe:
+        #    httpGet:
+        #      path: /health
+        #      port: 8080
+        #    initialDelaySeconds: 5
+        #    periodSeconds: 5
+        #    timeoutSeconds: 3
+        #    failureThreshold: 5
+        #    successThreshold: 1        
+        command: ["air", "-c", ".air.toml"]
