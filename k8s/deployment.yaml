@@ -52,5 +52,14 @@ spec:
         #    periodSeconds: 5
         #    timeoutSeconds: 3
         #    failureThreshold: 5
-        #    successThreshold: 1        
-        command: ["air", "-c", ".air.toml"]
+        #    successThreshold: 1  
+        workingDir: /projects/go
+        volumeMounts:
+            - name: source
+              mountPath: /projects/go
+        command: ["air", "-c", "/projects/go/.air.toml"]
+      volumes:
+        - name: source
+          hostPath:
+            path: /projects/go
+            type: Directory  

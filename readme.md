@@ -13,8 +13,14 @@ live logs:
 
 go dependency:
     go get github.com/gin-gonic/gin
-manages the configuration files (go.mod and go.sum):
+manages the configuration files (go.mod and go.sum): need to run every time localy after add or remove package 
     go mod tidy 
+download dependancy:
+    go mod vendor
+
+optional -  Build or run your project strictly using the local vendor folder
+    go build -mod=vendor
+
 
 
 http://localhost:8080/
@@ -114,3 +120,37 @@ List endpoint structure:
         |
         v
         HTTP JSON response
+
+
+
+
+
+
+
+-------------
+Your current development architecture is now:
+
+Ubuntu
+/var/www/projects/go
+        │
+        │ Minikube mount
+        ▼
+Minikube
+/projects/go
+        │
+        │ hostPath
+        ▼
+Go Pod
+/projects/go
+        │
+        ▼
+Air
+        │
+        ▼
+Go application :8080
+        │
+        ▼
+Kubernetes Service
+        │
+        ▼
+localhost:8080

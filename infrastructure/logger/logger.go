@@ -16,7 +16,7 @@ func New(environment string) (*zap.Logger, error) {
 	}
 
 	// Disable Debug and Info
-	//cfg.Level = zap.NewAtomicLevelAt(zapcore.WarnLevel)
+	cfg.Level = zap.NewAtomicLevelAt(zapcore.WarnLevel)
 
 	cfg.Encoding = "console"
 

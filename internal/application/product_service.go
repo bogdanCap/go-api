@@ -46,7 +46,7 @@ func (s ProductService) List(ctx context.Context) (product.Product, error) {
 		zap.String("path", "products"),
 	)
 
-	return product.Product{"11", "test", 444, 3, time.Now()}, nil //s.repo.FindAll(ctx)
+	return product.Product{"33333", "test", 444, 3, time.Now()}, nil //s.repo.FindAll(ctx)
 }
 
 // TODO split logic into separate service
