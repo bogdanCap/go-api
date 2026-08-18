@@ -13,6 +13,8 @@ live logs:
 
 go dependency:
     go get github.com/gin-gonic/gin
+manages the configuration files (go.mod and go.sum):
+    go mod tidy 
 
 
 http://localhost:8080/
