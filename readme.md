@@ -26,6 +26,15 @@ optional -  Build or run your project strictly using the local vendor folder
 http://localhost:8080/
 http://localhost:8080/products
 
+
+with k9s type: NodePort:
+    http://192.168.49.2:30080/products
+with LoadBalance:
+    kubectl get svc
+    http://192.168.49.2:31481/products
+
+
+
 k9s:
     minikube delete
 
@@ -36,9 +45,10 @@ k9s:
 
     minikube ssh
     cd /projects/go
-    docker build -t go/test:1.0 -f Dockerfile .
     docker build --target development -t go/test:1.0 -f Dockerfile .
 
+
+    docker build -t go/test:1.0 -f Dockerfile .
     if need to use docker hub:
         docker build -t yourusername/go-app:latest .
         docker push yourusername/go-app:latest
@@ -48,7 +58,14 @@ k9s:
     if all yaml in folde:
         kubectl apply -f k8s/ 
 
+    for local LoadBalancer:
+        minikube tunnel
+
     kubectl get deployments 
+
+    help to get service details:
+        kubectl get svc
+        minikube service go-test-service --url
 
     or
 
@@ -154,3 +171,22 @@ Kubernetes Service
         │
         ▼
 localhost:8080
+
+
+
+
+
+------------  Load Balancer schema -------------
+
+
+                    Internet
+                       │
+                       ▼
+                Load Balancer
+                       │
+                       ▼
+                Go Service
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+       Go Pod 1     Go Pod 2     Go Pod 3

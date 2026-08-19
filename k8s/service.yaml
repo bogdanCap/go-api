@@ -7,7 +7,10 @@ spec:
     app: go-test
   ports:
   - name: http
+    protocol: TCP
     port: 80
     targetPort: 8080
-  type: ClusterIP  
-  #type: NodePort 
+    #nodePort: 30080 #11 port accessible from outside the cluster
+  type: LoadBalancer  
+  #type: ClusterIP  
+  #type: NodePort #11 with nodPort param in ports
