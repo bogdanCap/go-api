@@ -7,6 +7,9 @@ import (
 	"test/infrastructure/logger"
 	"test/internal/application"
 	"test/internal/controller"
+	"context"
+	"test/infrastructure/postgres"
+	"time"
 	/*
 		"myapp/internal/config"
 		"myapp/internal/database"
@@ -27,11 +30,14 @@ type App struct {
 
 func New() (*App, error) {
 
+	ctx := context.Background()
 	cfg := config.Load()
+	
 
-	log, err := logger.New(cfg.App.Environment)
-	if err != nil {
-		return nil, err
+	log, logErr := logger.New(cfg.App.Environment)
+
+	if logErr != nil {
+		return nil, logErr
 	}
 
 	/*
@@ -47,12 +53,50 @@ func New() (*App, error) {
 		externalClient := externalapi.New(cfg.ExternalAPI)
 
 		productRepo := product.NewRepository(db)
+
+		type Config struct {
+		Host            string
+		Port            int
+		User            string
+		Password        string
+		Database        string
+		MaxConn         int32
+		MinConn         int32
+		MaxConnLifetime time.Duration
+		MaxConnIdleTime time.Duration
+	}
 	*/
+	db, dbErr := postgres.NewPool(ctx, postgres.Config{
+		Host: cfg.Database.Host,
+		Port: cfg.Database.Port,
+		User: cfg.Database.User,
+		Password: cfg.Database.Password,
+		Database: cfg.Database.Name,
+		MaxConn:        20,
+		MinConn:        5,
+		MaxConnLifetime: time.Hour,
+		MaxConnIdleTime: 30 * time.Minute,
+	})
+
+	if dbErr != nil {
+		dbErrMsg := fmt.Sprintf("database connection failed: %v", dbErr)
+		log.Fatal(
+			dbErrMsg,
+		)
+	}
+
+	defer db.Close()
+
+	productRepo := postgres.NewProductRepository(db)
+
+
+
 	productService := application.NewProductService(
 		/*productRepo,
 		redisClient,
 		kafkaProducer,
 		externalClient,*/
+		productRepo,
 		log,
 	)
 

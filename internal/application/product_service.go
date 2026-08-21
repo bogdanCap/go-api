@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"test/internal/domain/product"
+	"test/internal/port/repository"
 	"time"
 	/*"myapp/internal/externalapi"
 	"myapp/internal/kafka"
@@ -17,6 +18,7 @@ type ProductService struct {
 	redis    *redis.Client
 	kafka    *kafka.Producer
 	external *externalapi.Client*/
+	productRepo repository.IProductRepository
 	logger *zap.Logger
 }
 
@@ -27,6 +29,7 @@ func NewProductService(
 	   kafka *kafka.Producer,
 	   external *externalapi.Client,
 	*/
+	productRepo repository.IProductRepository,
 	logger *zap.Logger,
 ) ProductService {
 
@@ -35,6 +38,7 @@ func NewProductService(
 		redis: redis,
 		kafka: kafka,
 		external: external,*/
+		productRepo: productRepo,
 		logger: logger,
 	}
 }
@@ -46,7 +50,7 @@ func (s ProductService) List(ctx context.Context) (product.Product, error) {
 		zap.String("path", "products"),
 	)
 
-	return product.Product{"555", "test", 444, 3, time.Now()}, nil //s.repo.FindAll(ctx)
+	return product.Product{"888", "test", 444, 3, time.Now()}, nil //s.repo.FindAll(ctx)
 }
 
 // TODO split logic into separate service

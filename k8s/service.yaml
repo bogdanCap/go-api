@@ -10,7 +10,7 @@ spec:
     protocol: TCP
     port: 80
     targetPort: 8080
-    #nodePort: 30080 #11 port accessible from outside the cluster
-  type: LoadBalancer  
+    nodePort: 30080 #11 port accessible from outside the cluster
+  #type: LoadBalancer  
   #type: ClusterIP  
-  #type: NodePort #11 with nodPort param in ports
+  type: NodePort #11 with nodPort param in ports
