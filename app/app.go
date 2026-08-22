@@ -53,18 +53,6 @@ func New() (*App, error) {
 		externalClient := externalapi.New(cfg.ExternalAPI)
 
 		productRepo := product.NewRepository(db)
-
-		type Config struct {
-		Host            string
-		Port            int
-		User            string
-		Password        string
-		Database        string
-		MaxConn         int32
-		MinConn         int32
-		MaxConnLifetime time.Duration
-		MaxConnIdleTime time.Duration
-	}
 	*/
 	db, dbErr := postgres.NewPool(ctx, postgres.Config{
 		Host: cfg.Database.Host,
@@ -92,10 +80,6 @@ func New() (*App, error) {
 
 
 	productService := application.NewProductService(
-		/*productRepo,
-		redisClient,
-		kafkaProducer,
-		externalClient,*/
 		productRepo,
 		log,
 	)

@@ -13,6 +13,9 @@ live logs:
 
 go dependency:
     go get github.com/gin-gonic/gin
+    go get github.com/pressly/goose/v3
+
+
 manages the configuration files (go.mod and go.sum): need to run every time localy after add or remove package 
     go mod tidy 
 download dependancy:
@@ -21,6 +24,8 @@ download dependancy:
 optional -  Build or run your project strictly using the local vendor folder
     go build -mod=vendor
 
+migration:
+    go install github.com/pressly/goose/v3/cmd/goose@latest
 
 
 http://localhost:8080/

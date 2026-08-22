@@ -10,7 +10,7 @@ func ProductToDomain(
 ) *product.Product {
 
 	return product.NewProduct(
-		dto.Id,
+		dto.ID,
 		dto.Name,
 		dto.Price,
 	)
@@ -21,7 +21,7 @@ func ProductToResponse(
 ) dto.ProductResponseDTO {
 
 	return dto.ProductResponseDTO{
-		Id:        p.Id,
+		Id:        p.ID,
 		Price:     p.Price,
 		Name:      p.Name,
 		Status:    p.Status.String(),

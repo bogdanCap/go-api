@@ -3,7 +3,7 @@ package product
 import "time"
 
 type Product struct {
-	Id        string  `json:"id"`
+	ID        string  `json:"id"`
 	Name      string  `json:"name"`
 	Price     float64 `json:"price"`
 	Status    Status
@@ -12,7 +12,7 @@ type Product struct {
 
 func NewProduct(id string, name string, price float64) *Product {
 	return &Product{
-		Id:        id,
+		ID:        id,
 		Name:      name,
 		Price:     price,
 		Status:    StatusNew,

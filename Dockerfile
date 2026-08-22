@@ -23,6 +23,8 @@ FROM base AS development
 #ENV PATH="/go/bin:${PATH}"
 RUN go install github.com/cosmtrek/air@v1.40.4
 
+RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+
 # Install Air directly into /usr/local/bin
 ######RUN GOBIN=/usr/local/bin go install github.com/air-verse/air@latest
 
