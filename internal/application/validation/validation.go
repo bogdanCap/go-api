@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"test/internal/domain"
+	"github.com/bogdanCap/go-api/internal/domain"
 
 	"github.com/go-playground/validator/v10"
 )

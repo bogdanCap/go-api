@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-	"test/internal/application"
-	"test/internal/application/validation"
-	"test/internal/dto"
-	"test/internal/mapper"
-	"test/internal/port/service"
-	"test/internal/response"
+	"github.com/bogdanCap/go-api/internal/application"
+	"github.com/bogdanCap/go-api/internal/application/validation"
+	"github.com/bogdanCap/go-api/internal/dto"
+	"github.com/bogdanCap/go-api/internal/mapper"
+	"github.com/bogdanCap/go-api/internal/port/service"
+	"github.com/bogdanCap/go-api/internal/response"
 
 	"github.com/go-playground/validator/v10"
 )

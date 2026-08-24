@@ -3,9 +3,9 @@ package response
 import (
 	"encoding/json"
 	"net/http"
-	"test/internal/application/validation"
-	"test/internal/domain"
-	"test/internal/dto"
+	"github.com/bogdanCap/go-api/internal/application/validation"
+	"github.com/bogdanCap/go-api/internal/domain"
+	"github.com/bogdanCap/go-api/internal/dto"
 
 	"github.com/go-playground/validator/v10"
 )

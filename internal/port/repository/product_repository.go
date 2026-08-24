@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"test/internal/domain/product"
+	"github.com/bogdanCap/go-api/internal/domain/product"
 )
 
 type IProductRepository interface {

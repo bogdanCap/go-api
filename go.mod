@@ -1,4 +1,4 @@
-module test
+module github.com/bogdanCap/go-api
 
 go 1.26.0
 

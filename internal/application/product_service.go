@@ -3,8 +3,8 @@ package application
 import (
 	"context"
 	"errors"
-	"test/internal/domain/product"
-	"test/internal/port/repository"
+	"github.com/bogdanCap/go-api/internal/domain/product"
+	"github.com/bogdanCap/go-api/internal/port/repository"
 	"time"
 	/*"myapp/internal/externalapi"
 	"myapp/internal/kafka"

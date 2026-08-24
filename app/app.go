@@ -3,12 +3,12 @@ package app
 import (
 	"fmt"
 	"net/http"
-	"test/config"
-	"test/infrastructure/logger"
-	"test/internal/application"
-	"test/internal/controller"
+	"github.com/bogdanCap/go-api/config"
+	"github.com/bogdanCap/go-api/infrastructure/logger"
+	"github.com/bogdanCap/go-api/internal/application"
+	"github.com/bogdanCap/go-api/internal/controller"
 	"context"
-	"test/infrastructure/postgres"
+	"github.com/bogdanCap/go-api/infrastructure/postgres"
 	"time"
 	/*
 		"myapp/internal/config"

@@ -1,8 +1,8 @@
 package mapper
 
 import (
-	"test/internal/domain/product"
-	"test/internal/dto"
+	"github.com/bogdanCap/go-api/internal/domain/product"
+	"github.com/bogdanCap/go-api/internal/dto"
 )
 
 func ProductToDomain(

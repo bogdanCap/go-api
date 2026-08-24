@@ -5,9 +5,12 @@ WORKDIR /root
 # Copy Go modules and dependencies
 COPY go.mod ./
 COPY go.sum ./
+#11
+#COPY vendor ./vendor
 
 
 # or - RUN go mod vendor or RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-s -w" -o myapp .
+##11 this do not need if i use vendor
 RUN go mod download
 
 # ==============================================================================
@@ -40,6 +43,7 @@ RUN mkdir -p /root/tmp && chmod -R 777 /root/tmp
 
 EXPOSE 8080
 # Run Air inside the container
+##11 go build -buildvcs=false -o ./tmp/main ./cmd
 CMD ["/go/bin/air", "-c", ".air.toml"]
 
 
@@ -50,6 +54,7 @@ FROM base AS builder
 # Copy source code
 COPY . .
 #RUN go build -o ./tmp/main ./cmd
+##11 RUN go build -mod=vendor -o app ./cmd
 RUN go build -o app ./cmd
 
 # ==============================================================================
@@ -59,7 +64,7 @@ FROM alpine:3.21 AS production
 # Build the application
 #RUN go build -o main .
 # Use a minimal base image for final deployment
-FROM alpine:latest
+#FROM alpine:latest
 # Set working directory in the container
 WORKDIR /root
 #old version - WORKDIR /

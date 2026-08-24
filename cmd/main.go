@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"test/app"
+	"github.com/bogdanCap/go-api/app"
 )
 
 func main() {
