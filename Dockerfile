@@ -19,11 +19,6 @@ RUN go mod download
 FROM base AS development
 # Install Air for hot-reloading
 # in my case test or ://github.com
-#RUN go install test
-# Copy the pre-downloaded binary directly from your computer into the container path
-#COPY air /usr/local/bin/air
-#RUN chmod +x /usr/local/bin/air
-#ENV PATH="/go/bin:${PATH}"
 RUN go install github.com/cosmtrek/air@v1.40.4
 RUN go install github.com/pressly/goose/v3/cmd/goose@latest
 #for command -> until nc -z

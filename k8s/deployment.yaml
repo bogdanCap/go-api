@@ -12,22 +12,22 @@ spec:
       labels:
         app: go-test
     spec:
-      initContainers:
-        - name: wait-for-postgres
-          image: go/test:1.0
-          imagePullPolicy: Never
-          command:
-            - /bin/sh
-            - -c
-            - |
-              echo "DB_HOST=$DB_HOST"
-              echo "DB_PORT=$DB_PORT"
-              while ! nc -z "$DB_HOST" "$DB_PORT"; do
-                echo "Waiting for PostgreSQL..."
-                sleep 2
-              done
-
-              echo "PostgreSQL is available!"
+      #initContainers:
+      #  - name: wait-for-postgres
+      #    image: go/test:1.0
+      #    imagePullPolicy: Never
+      #    command:
+      #      - /bin/sh
+      #      - -c
+      #      - |
+      #        echo "DB_HOST=$DB_HOST"
+      #        echo "DB_PORT=$DB_PORT"
+      #        while ! nc -z "$DB_HOST" "$DB_PORT"; do
+      #          echo "Waiting for PostgreSQL..."
+      #          sleep 2
+      #        done
+      #
+      #        echo "PostgreSQL is available!"
       containers:
       - name: go-test
         image: go/test:1.0
@@ -47,7 +47,6 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PORT
-
           - name: DB_USER
             valueFrom:
               secretKeyRef:
@@ -65,20 +64,24 @@ spec:
               secretKeyRef:
                 name: postgres-secret
                 key: POSTGRES_DB
-        #readinessProbe:
-        #    httpGet:
-        #      path: /health
-        #      port: 8080
-        #    initialDelaySeconds: 5
-        #    periodSeconds: 5
-        #    timeoutSeconds: 3
-        #    failureThreshold: 5
-        #    successThreshold: 1  
         workingDir: /projects/go
         volumeMounts:
             - name: source
               mountPath: /projects/go
-        command: ["air", "-c", "/projects/go/.air.toml"]
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Waiting for PostgreSQL..."
+            echo "DB_HOST=$DB_HOST"
+            echo "DB_PORT=$DB_PORT"
+
+            until nc -z "$DB_HOST" "$DB_PORT"; do
+              echo "PostgreSQL is not ready - waiting..."
+              sleep 2
+            done
+
+            echo "PostgreSQL is available!"
+            exec air -c /projects/go/.air.toml
       volumes:
         - name: source
           hostPath:
