@@ -25,8 +25,11 @@ FROM base AS development
 #RUN chmod +x /usr/local/bin/air
 #ENV PATH="/go/bin:${PATH}"
 RUN go install github.com/cosmtrek/air@v1.40.4
-
 RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+#for command -> until nc -z
+RUN apt-get update \
+    && apt-get install -y netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Air directly into /usr/local/bin
 ######RUN GOBIN=/usr/local/bin go install github.com/air-verse/air@latest

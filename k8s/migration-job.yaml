@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: migration-secret
+type: Opaque
+stringData:
+  MIGRATION_DIR: /projects/go/migration
+
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -13,14 +22,25 @@ spec:
         - name: migration
           image: go/test:1.0
           imagePullPolicy: Never
+          #command:
+          #  - goose
+          #args:
+          #  - "-dir"
+          #  - "/projects/go/migration"
+          #  - "postgres"
+          #  - "postgres://$(DB_USER):$(DB_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(DB_NAME)?sslmode=disable"
+          #  - "up"
           command:
-            - goose
-          args:
-            - "-dir"
-            - "/projects/go/migration"
-            - "postgres"
-            - "postgres://$(DB_USER):$(DB_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(DB_NAME)?sslmode=disable"
-            - "up"
+            - /bin/sh
+            - -c
+            - |
+                while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
+                  echo "Waiting for PostgreSQL..."
+                  sleep 2
+                done
+                echo "PostgreSQL is available!"
+                echo "Running migrations..."
+                goose -dir "$MIGRATION_DIR" postgres "postgres://$(DB_USER):$(DB_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(DB_NAME)?sslmode=disable" up
 
           env:
             - name: POSTGRES_HOST
@@ -52,6 +72,11 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_DB
+            - name: MIGRATION_DIR
+              valueFrom:
+                secretKeyRef:
+                  name: migration-secret
+                  key: MIGRATION_DIR
           volumeMounts:
             - name: source
               mountPath: /projects/go        

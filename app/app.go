@@ -54,6 +54,7 @@ func New() (*App, error) {
 
 		productRepo := product.NewRepository(db)
 	*/
+	
 	db, dbErr := postgres.NewPool(ctx, postgres.Config{
 		Host: cfg.Database.Host,
 		Port: cfg.Database.Port,

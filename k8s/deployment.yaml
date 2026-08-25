@@ -12,6 +12,22 @@ spec:
       labels:
         app: go-test
     spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: go/test:1.0
+          imagePullPolicy: Never
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "DB_HOST=$DB_HOST"
+              echo "DB_PORT=$DB_PORT"
+              while ! nc -z "$DB_HOST" "$DB_PORT"; do
+                echo "Waiting for PostgreSQL..."
+                sleep 2
+              done
+
+              echo "PostgreSQL is available!"
       containers:
       - name: go-test
         image: go/test:1.0
@@ -22,10 +38,15 @@ spec:
         #command: ["air"] 
         env:
           - name: DB_HOST
-            value: postgres
-
+            valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_HOST
           - name: DB_PORT
-            value: "5432"
+            valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PORT
 
           - name: DB_USER
             valueFrom:

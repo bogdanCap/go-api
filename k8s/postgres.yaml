@@ -64,19 +64,17 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_DB
-          #readinessProbe:
-          #  exec:
-          #    command:
-          #      - pg_isready
-          #      - -U
-          #      - appuser
-          #      - -d
-          #      - appdb
-          #  initialDelaySeconds: 5
-          #  periodSeconds: 5
-          #  timeoutSeconds: 3
-          #  failureThreshold: 5
-          #  successThreshold: 1        
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 5
+            successThreshold: 1        
 
           volumeMounts:
             - name: postgres-storage
