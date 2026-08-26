@@ -3,13 +3,16 @@ package domain
 import "time"
 
 type Product struct {
-	ID        string  `json:"id"`
-	Name      string  `json:"name"`
-	Price     float64 `json:"price"`
-	Status    Status
+	ArticleID int64 
+	Name      string  
+	Desc      string 
+	//Price     float64 `json:"price"`
+	//Status    Status
 	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
+/*
 func NewProduct(id string, name string, price float64) *Product {
 	return &Product{
 		ID:        id,
@@ -18,8 +21,9 @@ func NewProduct(id string, name string, price float64) *Product {
 		Status:    StatusNew,
 		CreatedAt: time.Now(),
 	}
-}
+}*/
 
+/*
 func (p *Product) CanCancel() bool {
 	return p.Status == StatusNew ||
 		p.Status == StatusProcessing
@@ -34,3 +38,4 @@ func (p *Product) Cancel() error {
 
 	return nil
 }
+*/

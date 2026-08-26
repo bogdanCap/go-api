@@ -27,3 +27,18 @@ func (s Status) String() string {
 		return "unknown"
 	}
 }
+
+func FromInt(value int8) Status {
+    switch Status(value) {
+    case StatusNew:
+        return StatusNew
+    case StatusProcessing:
+        return StatusProcessing
+    case StatusCompleted:
+        return StatusCompleted
+    case StatusCancelled:
+        return StatusCancelled
+    default:
+        return Status(0)
+    }
+}

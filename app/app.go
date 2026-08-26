@@ -11,6 +11,7 @@ import (
 	"context"
 	"github.com/bogdanCap/go-api/infrastructure/postgres"
 	"time"
+	"github.com/jackc/pgx/v5/pgxpool"
 	/*
 		"myapp/internal/config"
 		"myapp/internal/database"
@@ -27,6 +28,7 @@ type App struct {
 	router http.Handler
 	config config.Config
 	logger *zap.Logger
+	db *pgxpool.Pool
 }
 
 func New() (*App, error) {
@@ -75,10 +77,8 @@ func New() (*App, error) {
 		)
 	}
 
-	defer db.Close()
 
 	productRepo := postgres.NewProductRepository(db)
-
 
 
 	productService := productService.New(
@@ -94,7 +94,12 @@ func New() (*App, error) {
 		router: r,
 		config: cfg,
 		logger: log,
+		db: db,
 	}, nil
+}
+
+func (a *App) Close() {
+    a.db.Close()
 }
 
 func (a *App) Run() {

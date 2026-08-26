@@ -2,7 +2,10 @@ package postgres
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"github.com/bogdanCap/go-api/internal/product/domain"
+	"github.com/bogdanCap/go-api/internal/product/dto"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -15,7 +18,6 @@ type ProductRepository struct {
 func NewProductRepository(
 	db *pgxpool.Pool,
 ) ProductRepository {
-
 	return ProductRepository{
 		db: db,
 	}
@@ -27,12 +29,11 @@ func (r ProductRepository) Create(
 	product *domain.Product,
 ) error {
 
+
 	query := `
 		INSERT INTO orders
 		(
 		 	name,
-			price,
-			status,
 			created_at
 		)
 		VALUES
@@ -43,8 +44,8 @@ func (r ProductRepository) Create(
 		ctx,
 		query,
 		product.Name,
-		product.Price,
-		product.Status,
+		//product.Price,
+		//product.Status,
 		product.CreatedAt,
 	)
 
@@ -53,54 +54,18 @@ func (r ProductRepository) Create(
 
 func (r ProductRepository) List(
 	ctx context.Context,
-	limit int,
-	offset int,
-) ([]*domain.Product, error) {
-
-	/* LIST return domain object
-	rows, err := r.queries.ListOrders(
-		ctx,
-		ListOrdersParams{
-			Limit: limit,
-			Offset: offset,
-		},
-	)
-
-
-	if err != nil {
-		return nil, err
-	}
-
-
-	result := make(
-		[]*product.Product,
-		0,
-		len(rows),
-	)
-
-
-	for _, row := range rows {
-
-		result = append(
-			result,
-			&product.Product{
-				Price: row.Price,
-				Name: row.Name,
-				CustomerID: row.CustomerID,
-				Status: order.Status(row.Status),
-				CreatedAt: row.CreatedAt,
-			},
-		)
-	}
--------------------------
+	filter dto.ProductListFilterDTO,
+) ([]domain.Product, error) {
 
 	query := `
 		SELECT
-			id,
-			name,
-			email,
-			status
-		FROM users
+			p.article_id,
+			p.created_at,
+			p.updated_at,
+			ps.name,
+			ps.desc
+		FROM products p
+		INNER JOIN product_specs ps ON ps.guid = p.spec_guid
 	`
 
 	var conditions []string
@@ -110,35 +75,18 @@ func (r ProductRepository) List(
 	if filter.Name != nil {
 		conditions = append(
 			conditions,
-			fmt.Sprintf("name ILIKE $%d", argIndex),
+			fmt.Sprintf("name = $%d", argIndex),
 		)
-		args = append(args, "%"+*filter.Name+"%")
+		args = append(args, *filter.Name)
 		argIndex++
 	}
 
-	if filter.Email != nil {
-		conditions = append(
-			conditions,
-			fmt.Sprintf("email ILIKE $%d", argIndex),
-		)
-		args = append(args, "%"+*filter.Email+"%")
-		argIndex++
-	}
-
-	if filter.Status != nil {
-		conditions = append(
-			conditions,
-			fmt.Sprintf("status = $%d", argIndex),
-		)
-		args = append(args, *filter.Status)
-		argIndex++
-	}
 
 	if len(conditions) > 0 {
 		query += " WHERE " + strings.Join(conditions, " AND ")
 	}
 
-	query += " ORDER BY id DESC"
+	query += " ORDER BY p.article_id DESC"
 
 	if filter.Limit > 0 {
 		query += fmt.Sprintf(" LIMIT $%d", argIndex)
@@ -152,40 +100,37 @@ func (r ProductRepository) List(
 	}
 
 	rows, err := r.db.Query(ctx, query, args...)
+
+	//fmt.Println("Conversion error:", query)
+
+
 	if err != nil {
 		return nil, fmt.Errorf("query users: %w", err)
 	}
+
 	defer rows.Close()
 
-	users := make([]User, 0)
+	products := make([]domain.Product, 0)
 
 	for rows.Next() {
-		var user User
+		var product domain.Product
 
 		if err := rows.Scan(
-			&user.ID,
-			&user.Name,
-			&user.Email,
-			&user.Status,
+			&product.ArticleID,
+			&product.CreatedAt,
+			&product.UpdatedAt,
+			&product.Name,
+			&product.Desc,
 		); err != nil {
-			return nil, fmt.Errorf("scan user: %w", err)
+			return nil, fmt.Errorf("scan product: %w", err)
 		}
 
-		users = append(users, user)
+		products = append(products, product)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("iterate users: %w", err)
+		return nil, fmt.Errorf("iterate products: %w", err)
 	}
 
-	return users, nil
-
-
-	------------ or better to do this if need  
-	query := "SELECT * FROM users WHERE name = $1"
-	args := []any{*filter.Name}
-
-	*/
-
-	return []*domain.Product{}, nil
+	return products, nil
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"fmt"
 	//"github.com/bogdanCap/go-api/internal/application"
 	"github.com/bogdanCap/go-api/internal/product/application/service"
 	"github.com/bogdanCap/go-api/internal/product/application/port"
@@ -34,6 +35,7 @@ func (c *ProductController) List(w http.ResponseWriter, r *http.Request) {
 
 	var req dto.ProductListFilterDTO
 
+	/*
 	if value := query.Get("age"); value != "" {
 		age, err := strconv.Atoi(value)
 		if err != nil {
@@ -42,11 +44,33 @@ func (c *ProductController) List(w http.ResponseWriter, r *http.Request) {
 		}
 
 		req.Age = &age
-	}
+	}*/
 
 	// name
 	if value := query.Get("name"); value != "" {
 		req.Name = &value
+	}
+
+	if limitRow := query.Get("limit"); limitRow != "" {
+		limit, err := strconv.Atoi(limitRow)
+
+		if err != nil {
+			fmt.Println("Conversion error:", err)
+			return
+		}
+
+		req.Limit = limit
+	}
+
+	if offsetRow := query.Get("offset"); offsetRow != "" {
+		offset, err := strconv.Atoi(offsetRow)
+
+		if err != nil {
+			fmt.Println("Conversion error:", err)
+			return
+		}
+
+		req.Offset = offset
 	}
 
 	// validation
@@ -79,15 +103,15 @@ func (c *ProductController) List(w http.ResponseWriter, r *http.Request) {
 		)
 	*/
 
-	product, err := c.service.List(r.Context())
+	product, err := c.service.List(r.Context(), req)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	productResponseDTO := mapper.ProductToResponse(product)
+	productsResponseDTO := mapper.ProductsToResponse(product)
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(productResponseDTO)
+	json.NewEncoder(w).Encode(productsResponseDTO)
 }

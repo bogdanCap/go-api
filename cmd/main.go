@@ -6,11 +6,13 @@ import (
 )
 
 func main() {
-	application, err := app.New()
+	app, err := app.New()
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	defer app.Close()
  
-	application.Run()
+	app.Run()
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/bogdanCap/go-api/internal/product/dto"
 )
 
+/*
 func ProductToDomain(
 	dto dto.ProductDTO,
 ) *domain.Product {
@@ -14,18 +15,17 @@ func ProductToDomain(
 		dto.Name,
 		dto.Price,
 	)
-}
+}*/
 
 func ProductToResponse(
 	p domain.Product,
 ) dto.ProductResponseDTO {
-
 	return dto.ProductResponseDTO{
-		ID:        p.ID,
-		Price:     p.Price,
+		ArticleID: p.ArticleID,
 		Name:      p.Name,
-		Status:    p.Status.String(),
+		Desc:      p.Desc,
 		CreatedAt: p.CreatedAt,
+		UpdatedAt: p.UpdatedAt,
 	}
 }
 
