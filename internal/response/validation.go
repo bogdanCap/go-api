@@ -5,12 +5,19 @@ import (
 	"net/http"
 	"github.com/bogdanCap/go-api/internal/application/validation"
 	"github.com/bogdanCap/go-api/internal/domain"
-	"github.com/bogdanCap/go-api/internal/dto"
 
 	"github.com/go-playground/validator/v10"
 )
 
 type ValidationMessageFunc func(err validator.FieldError) string
+
+
+type ValidationErrorResponse struct {
+	//Message string `json:"message"`
+	Field string `json:"field"`
+	Error string `json:"error"`
+}
+
 
 func WriteValidationError(
 	w http.ResponseWriter,
@@ -20,7 +27,7 @@ func WriteValidationError(
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusUnprocessableEntity)
 
-	response := dto.ValidationErrorResponse{}
+	response := ValidationErrorResponse{}
 
 	if validationErrors, ok := err.(validator.ValidationErrors); ok {
 		for _, fieldError := range validationErrors {

@@ -1,4 +1,4 @@
-package product
+package domain
 
 import "time"
 
@@ -20,17 +20,17 @@ func NewProduct(id string, name string, price float64) *Product {
 	}
 }
 
-func (o *Product) CanCancel() bool {
-	return o.Status == StatusNew ||
-		o.Status == StatusProcessing
+func (p *Product) CanCancel() bool {
+	return p.Status == StatusNew ||
+		p.Status == StatusProcessing
 }
 
-func (o *Product) Cancel() error {
-	if !o.CanCancel() {
+func (p *Product) Cancel() error {
+	if !p.CanCancel() {
 		return ErrProductCannotBeCancelled
 	}
 
-	o.Status = StatusCancelled
+	p.Status = StatusCancelled
 
 	return nil
 }

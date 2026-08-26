@@ -1,8 +1,8 @@
-package repository
+package port
 
 import (
 	"context"
-	"github.com/bogdanCap/go-api/internal/domain/product"
+	"github.com/bogdanCap/go-api/internal/product/domain"
 )
 
 type IProductRepository interface {
@@ -10,11 +10,11 @@ type IProductRepository interface {
 
 	Create(
 		ctx context.Context,
-		product *product.Product,
+		product *domain.Product,
 	) error
 	List(
 		ctx context.Context,
 		limit int,
 		offset int,
-	) ([]*product.Product, error)
+	) ([]*domain.Product, error)
 }

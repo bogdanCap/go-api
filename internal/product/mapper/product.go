@@ -1,15 +1,15 @@
 package mapper
 
 import (
-	"github.com/bogdanCap/go-api/internal/domain/product"
-	"github.com/bogdanCap/go-api/internal/dto"
+	"github.com/bogdanCap/go-api/internal/product/domain"
+	"github.com/bogdanCap/go-api/internal/product/dto"
 )
 
 func ProductToDomain(
 	dto dto.ProductDTO,
-) *product.Product {
+) *domain.Product {
 
-	return product.NewProduct(
+	return domain.NewProduct(
 		dto.ID,
 		dto.Name,
 		dto.Price,
@@ -17,11 +17,11 @@ func ProductToDomain(
 }
 
 func ProductToResponse(
-	p product.Product,
+	p domain.Product,
 ) dto.ProductResponseDTO {
 
 	return dto.ProductResponseDTO{
-		Id:        p.ID,
+		ID:        p.ID,
 		Price:     p.Price,
 		Name:      p.Name,
 		Status:    p.Status.String(),
@@ -30,7 +30,7 @@ func ProductToResponse(
 }
 
 func ProductsToResponse(
-	products []product.Product,
+	products []domain.Product,
 ) []dto.ProductResponseDTO {
 
 	result := make(

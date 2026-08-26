@@ -4,21 +4,23 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-	"github.com/bogdanCap/go-api/internal/application"
-	"github.com/bogdanCap/go-api/internal/application/validation"
-	"github.com/bogdanCap/go-api/internal/dto"
-	"github.com/bogdanCap/go-api/internal/mapper"
-	"github.com/bogdanCap/go-api/internal/port/service"
+	//"github.com/bogdanCap/go-api/internal/application"
+	"github.com/bogdanCap/go-api/internal/product/application/service"
+	"github.com/bogdanCap/go-api/internal/product/application/port"
+	"github.com/bogdanCap/go-api/internal/product/validation"
+	"github.com/bogdanCap/go-api/internal/product/dto"
+	"github.com/bogdanCap/go-api/internal/product/mapper"
+	//"github.com/bogdanCap/go-api/internal/port/service"
 	"github.com/bogdanCap/go-api/internal/response"
 
 	"github.com/go-playground/validator/v10"
 )
 
 type ProductController struct {
-	service service.IProductService
+	service port.IProductService
 }
 
-func NewProductController(service application.ProductService) ProductController {
+func NewProductController(service service.ProductService) ProductController {
 	return ProductController{
 		service: service,
 	}

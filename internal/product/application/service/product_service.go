@@ -1,10 +1,10 @@
-package application
+package service
 
 import (
 	"context"
 	"errors"
-	"github.com/bogdanCap/go-api/internal/domain/product"
-	"github.com/bogdanCap/go-api/internal/port/repository"
+	"github.com/bogdanCap/go-api/internal/product/domain"
+	"github.com/bogdanCap/go-api/internal/product/application/port"
 	"time"
 	/*"myapp/internal/externalapi"
 	"myapp/internal/kafka"
@@ -18,18 +18,18 @@ type ProductService struct {
 	redis    *redis.Client
 	kafka    *kafka.Producer
 	external *externalapi.Client*/
-	productRepo repository.IProductRepository
+	productRepo port.IProductRepository
 	logger *zap.Logger
 }
 
-func NewProductService(
+func New(
 	/*
 	   repo *Repository,
 	   redis *redis.Client,
 	   kafka *kafka.Producer,
 	   external *externalapi.Client,
 	*/
-	productRepo repository.IProductRepository,
+	productRepo port.IProductRepository,
 	logger *zap.Logger,
 ) ProductService {
 
@@ -43,20 +43,20 @@ func NewProductService(
 	}
 }
 
-func (s ProductService) List(ctx context.Context) (product.Product, error) {
+func (s ProductService) List(ctx context.Context) (domain.Product, error) {
 	s.logger.Info(
 		"get products request",
 		zap.String("method", "some method"),
 		zap.String("path", "products"),
 	)
 
-	return product.Product{"888", "test", 444, 3, time.Now()}, nil //s.repo.FindAll(ctx)
+	return domain.Product{"888", "test", 444, 3, time.Now()}, nil //s.repo.FindAll(ctx)
 }
 
 // TODO split logic into separate service
 func (s ProductService) Create(
 	ctx context.Context,
-	product *product.Product,
+	product *domain.Product,
 ) error {
 
 	// business validation

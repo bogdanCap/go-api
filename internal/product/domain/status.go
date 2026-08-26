@@ -1,4 +1,4 @@
-package product
+package domain
 
 type Status int8
 
@@ -8,11 +8,6 @@ const (
 	StatusCompleted
 	StatusCancelled
 )
-
-func (s Status) IsFinished() bool {
-	return s == StatusCompleted ||
-		s == StatusCancelled
-}
 
 func (s Status) String() string {
 	switch s {

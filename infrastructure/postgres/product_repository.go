@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"context"
-	"github.com/bogdanCap/go-api/internal/domain/product"
+	"github.com/bogdanCap/go-api/internal/product/domain"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -24,7 +24,7 @@ func NewProductRepository(
 
 func (r ProductRepository) Create(
 	ctx context.Context,
-	product *product.Product,
+	product *domain.Product,
 ) error {
 
 	query := `
@@ -55,7 +55,7 @@ func (r ProductRepository) List(
 	ctx context.Context,
 	limit int,
 	offset int,
-) ([]*product.Product, error) {
+) ([]*domain.Product, error) {
 
 	/* LIST return domain object
 	rows, err := r.queries.ListOrders(
@@ -187,5 +187,5 @@ func (r ProductRepository) List(
 
 	*/
 
-	return []*product.Product{}, nil
+	return []*domain.Product{}, nil
 }

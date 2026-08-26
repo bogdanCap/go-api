@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/bogdanCap/go-api/internal/controller"
+	"github.com/bogdanCap/go-api/internal/product/controller"
 
 	"github.com/go-chi/chi/v5"
 	//"net/http"

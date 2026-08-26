@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"github.com/bogdanCap/go-api/config"
 	"github.com/bogdanCap/go-api/infrastructure/logger"
-	"github.com/bogdanCap/go-api/internal/application"
-	"github.com/bogdanCap/go-api/internal/controller"
+	//"github.com/bogdanCap/go-api/internal/application"
+	productService "github.com/bogdanCap/go-api/internal/product/application/service"
+	productController "github.com/bogdanCap/go-api/internal/product/controller"
 	"context"
 	"github.com/bogdanCap/go-api/infrastructure/postgres"
 	"time"
@@ -80,12 +81,12 @@ func New() (*App, error) {
 
 
 
-	productService := application.NewProductService(
+	productService := productService.New(
 		productRepo,
 		log,
 	)
 
-	productController := controller.NewProductController(productService)
+	productController := productController.NewProductController(productService)
 
 	r := NewRouter(productController)
 
