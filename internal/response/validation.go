@@ -32,6 +32,7 @@ func WriteValidationError(
 	if validationErrors, ok := err.(validator.ValidationErrors); ok {
 		for _, fieldError := range validationErrors {
 			response.Field = fieldError.Field()
+
 			response.Error = validation.Message(
 				fieldError,
 				messages,

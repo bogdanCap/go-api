@@ -7,4 +7,10 @@ var ProductValidationMessages = map[string]map[string]string{
 	"Name": {
 		"min": "name must contain at least 3 characters",
 	},
+	"Limit": {
+		"required": "Is required",
+	},
+	"Offset": {
+		"required": "Is required",
+	},
 }

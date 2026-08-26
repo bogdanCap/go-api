@@ -2,6 +2,7 @@ package validation
 
 import (
 	"github.com/bogdanCap/go-api/internal/domain"
+	"fmt"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -15,6 +16,10 @@ func Message(
 			return message
 		}
 	}
+
+	fmt.Println("1:", err.Field())
+	fmt.Println("2:", err.Tag())
+
 
 	return "invalid value"
 }
