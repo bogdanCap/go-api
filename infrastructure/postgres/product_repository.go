@@ -75,7 +75,7 @@ func (r ProductRepository) List(
 	if filter.Name != nil {
 		conditions = append(
 			conditions,
-			fmt.Sprintf("name = $%d", argIndex),
+			fmt.Sprintf("ps.name = $%d", argIndex),
 		)
 		args = append(args, *filter.Name)
 		argIndex++
@@ -88,24 +88,18 @@ func (r ProductRepository) List(
 
 	query += " ORDER BY p.article_id DESC"
 
-	if filter.Limit > 0 {
-		query += fmt.Sprintf(" LIMIT $%d", argIndex)
-		args = append(args, filter.Limit)
-		argIndex++
-	}
+	query += fmt.Sprintf(" LIMIT $%d", argIndex)
+	args = append(args, filter.Limit)
+	argIndex++
 
-	if filter.Offset > 0 {
-		query += fmt.Sprintf(" OFFSET $%d", argIndex)
-		args = append(args, filter.Offset)
-	}
+	//this last argument and argIndex++ do not need
+	query += fmt.Sprintf(" OFFSET $%d", argIndex)
+	args = append(args, filter.Offset)
 
 	rows, err := r.db.Query(ctx, query, args...)
 
-	//fmt.Println("Conversion error:", query)
-
-
 	if err != nil {
-		return nil, fmt.Errorf("query users: %w", err)
+		return nil, fmt.Errorf("query products error: %w", err)
 	}
 
 	defer rows.Close()
